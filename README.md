@@ -19,6 +19,7 @@
 - `recommended_action`: the **final trading decision** (“buy”, “sell”, “hold”) derived from the interplay of all the above metrics, ensuring a single actionable output.
 
 **Design Philosophy:** 
+
 Shift from reactive, single‑day analysis to a strategic, multi‑month framework that **aggregates news and market trends**. By extracting structured signals (sentiment, adoption, regulatory risk, whale activity) and combining them with summarized technicals, the prompt enables a holistic view of momentum and risk. This approach yields a single, actionable trading recommendation grounded in both narrative and data, suitable for swing or position trading decisions.
 
 ### Business Logic Design
