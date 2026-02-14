@@ -40,8 +40,8 @@ Shift from reactive, single‑day analysis to a strategic, multi‑month framewo
   Condition: `RSI > 85`
   Interpretation: Extreme overbought condition acts as a stop‑loss override (though note that this is already covered by RSI > 75, so it's redundant in practice).
 
-- Hold
-- 
+- Hold:
+
   Default when no buy or sell condition is met.
 
 **Mermaid diagram:**
