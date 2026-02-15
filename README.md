@@ -67,15 +67,3 @@ graph TD
     SellSignal --> End
     HoldPosition --> End
 ```
-
-## Performance Analysis:
-
-| Metrics  | Value |
-| ------------- | ------------- |
-| Total Trades  | 8  |
-| Win Rate  | 87.50%  |
-| Profit Factor  | 9.13  |
-| Total Return  | 2.19%  |
-| Sharpe Ratio  | 2.90  |
-| Max Drawdown  | -1.30%  |
-| Final Balance  | $10 218.70  |
