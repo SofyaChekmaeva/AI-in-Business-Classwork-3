@@ -25,24 +25,8 @@ Shift from reactive, single‑day analysis to a strategic, multi‑month framewo
 ### Business Logic Design
 
 **Core Decision Rules:**
-- Buy:
 
-  Condition: `sentiment > 0.5` AND `RSI < 70` AND `Bollinger Band Position < 0.8`
-  Interpretation: Strong positive sentiment, not overbought, and price not near the upper resistance band
 
-- Sell:
-
-  Condition: `sentiment < -0.3` OR `RSI > 75`
-  Interpretation: Either negative sentiment or overbought conditions trigger a sell signal
-
-- Emergency Sell:
-
-  Condition: `RSI > 85`
-  Interpretation: Extreme overbought condition acts as a stop‑loss override (though note that this is already covered by RSI > 75, so it's redundant in practice).
-
-- Hold:
-
-  Default when no buy or sell condition is met.
 
 **Mermaid diagram:**
 ```mermaid
