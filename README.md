@@ -47,23 +47,45 @@ Shift from reactive, single‑day analysis to a strategic, multi‑month framewo
 **Mermaid diagram:**
 ```mermaid
 graph TD
-    Start[Daily Data for each ticker] --> Compute[Compute totalScore and threshold<br>from RSI, MACD, BB%, sentiment,<br>trend, volume, volatility]
-    Compute --> CheckPosition{In position?}
-
-    CheckPosition -->|No| CheckEntry{totalScore higher than threshold?}
-    CheckEntry -->|Yes| Buy[Buy - enter position]
-    CheckEntry -->|No| Hold[Hold - do nothing]
-
-    CheckPosition -->|Yes| UpdatePeak[Update peak price since entry]
-    UpdatePeak --> CheckTrail{Check trailing stop}
-    CheckTrail -->|Yes - price dropped| SellTrail[Sell - trailing stop]
-    CheckTrail -->|No| CheckExit{Check exit signal}
-    CheckExit -->|Yes - bearish| SellSignal[Sell - bearish signal]
-    CheckExit -->|No| HoldPosition[Continue holding]
-
-    Buy --> End[Next day / ticker]
-    Hold --> End
-    SellTrail --> End
-    SellSignal --> End
-    HoldPosition --> End
+    Start[Market Data Input] --> GetData[Extract: price, RSI, MA7, MA20, sentiment]
+    GetData --> Sentiment[Determine Sentiment Label & Score]
+    Sentiment --> CheckMA{MA7 and MA20 exist?}
+    
+    CheckMA -->|Yes| MA_Branch[Check MA7 > MA20?]
+    MA_Branch -->|Yes| CheckRSI{RSI < 60?}
+    MA_Branch -->|No| SetSell[Signal = SELL]
+    CheckRSI -->|Yes| CheckSent{Sentiment is NEGATIVE?}
+    CheckRSI -->|No| SetSell
+    CheckSent -->|Yes| SetSell
+    CheckSent -->|No| SetBuy[Signal = BUY]
+    
+    CheckMA -->|No| SimpleScore[Compute simple score]
+    SimpleScore --> ScoreCheck{Score > 0.1?}
+    ScoreCheck -->|Yes| SetBuy
+    ScoreCheck -->|No| SetSell
+    
+    SetBuy --> Decision[Decision = BUY]
+    SetSell --> Decision[Decision = SELL]
+    
+    Decision --> CheckPosition{Already in position?}
+    CheckPosition -->|No| CheckBuy{Decision is BUY?}
+    CheckPosition -->|Yes| CheckSell{Decision is SELL?}
+    
+    CheckBuy -->|Yes| Enter[Action: BUY<br/>Set entry price, date]
+    CheckBuy -->|No| NoAction[Action: NONE]
+    
+    CheckSell -->|Yes| CheckHold{Held >= MIN_HOLD_DAYS?}
+    CheckSell -->|No| CheckStop{Stop-loss triggered?}
+    
+    CheckHold -->|Yes| Exit[Action: SELL<br/>Compute PnL]
+    CheckHold -->|No| CheckStop
+    
+    CheckStop -->|Yes| Exit
+    CheckStop -->|No| NoAction
+    
+    Enter --> Record[Record trade log]
+    Exit --> Record
+    NoAction --> Record
+    
+    Record --> Next[Next day]
 ```
